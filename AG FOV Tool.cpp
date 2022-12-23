@@ -28,29 +28,6 @@ ifstream inTempFile;
 ofstream outTempFile;
 ofstream outFile;
 
-bool promptYesNo(string text) {
-    bool YesNo = false;
-    string value;
-
-    do {
-        cout << text << endl;
-        cout << "Enter Y for yes or N for no" << endl;
-        value = _getch();
-
-        // Convert to Lowercase
-        for (int i = 0; i < value.length(); i++) value[i] = tolower(value[i]);
-        //check for values
-        if (value == "yes") value = "y";
-        if (value == "no") value = "n";
-        if (value == "y") YesNo = true;
-        if (value == "n") YesNo = false;
-
-    } while (value != "y" && value != "n");
-
-    return YesNo;
-}
-
-
 int main()
 {
     cout << "------------------------- Star Citizen FOV Tool ----------------------------" << endl;
@@ -60,8 +37,8 @@ int main()
     cout <<   "It will then read the current Star Citizen config and make a local copy with " << endl;
     cout <<   "the new FOV value. You will be given the option to copy this new file into \nthe game directory and overrite the old one." << endl;
     cout << "\nCurrent path to Best Damn Space Sim is:   \n" << scPath << endl;
-    bool userinput = promptYesNo("\nDo you want to change it?");
-    if (userinput) {
+    promptYesNo Q1("\nDo you want to change it?"); 
+    if (Q1.get_YesNo()) {
         cout << "\nNeedy. Enter new path and press enter: ";
         getline(cin,scPath);
         cout << "\nNew path to Star Citizen is " << scPath << endl;
@@ -71,8 +48,8 @@ int main()
     }
     attPath = scPath + "\\USER\\Client\\0\\Profiles\\default\\attributes.xml";
     cout << "\nDefault resolution for aspect ratio calculation is " << HresIn << "x" << VresIn << ".";
-    bool userinput3 = promptYesNo(" Change it? ");
-        if (userinput3) {
+    promptYesNo Q2(" Change it? ");
+        if (Q2.get_YesNo()) {
             cout << "\nEnter horizontal resolution and press enter:";
             cin >> HresIn;
             cout << "\nEnter vertical resolution and press enter:";
@@ -90,7 +67,6 @@ int main()
         cin >> HfovIn;
     } while (HfovIn > maxFOV || HfovIn < 60);
     my_screen.set_HFOV(HfovIn);
- //   screen my_screen(2560, 1440, 120);
     VfovStr = to_string((int)round(my_screen.get_VFOV())); //round Vertical FOV and convert to string
     cout << "\nBig brain math results:" << endl;
     cout << "   Screen resolution is " << my_screen.get_Hres() << "x" << my_screen.get_Vres() << endl;
@@ -116,8 +92,8 @@ int main()
         inFile.close();
         outTempFile.close();
     }
-    bool userinput2 = promptYesNo("\nWould you like to copy the new file to game folder (overite)?");
-    if (userinput2) {
+    promptYesNo Q3("\nWould you like to copy the new file to game folder (overite)?");
+    if (Q3.get_YesNo()) {
         inTempFile.open("attributes.xml");
         outFile.open(attPath);
         if (inTempFile.fail())

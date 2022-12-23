@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 
 class screen {
 private:
@@ -17,4 +18,14 @@ public:
     double get_VFOV();
     double get_maxFOV();
     void set_HFOV(int new_HFOV);
+};
+
+class promptYesNo {
+private:
+    bool YesNo;
+    std::string text;
+    std::string value;
+public:
+    promptYesNo(std::string text_i);
+    bool get_YesNo();
 };
