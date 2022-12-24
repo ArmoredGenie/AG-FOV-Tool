@@ -8,28 +8,14 @@
 
 using namespace std;
 
-string txtLine;
-string srch = " <Attr name=\"FOV\" value=\"";
-int number;
-char letter; 
-size_t pos;
-int HresIn = 2560;
-int VresIn = 1440;
-int HfovIn;
-int maxFOV;
-string VfovStr;
-//string scPath = "C:\\StarCitizen\\Live";
-string scPath = "C:\\Program Files\\Roberts Space Industries\\StarCitizen\\LIVE";
-string attPath;
-string newAttPath;
-ifstream inFile;
-ifstream inTempFile;
-ofstream outTempFile;
-ofstream outFile;
+string srchFOV = " <Attr name=\"FOV\" value=\"";
+string scPath = "C:\\StarCitizen\\Live";
+//string scPath = "C:\\Program Files\\Roberts Space Industries\\StarCitizen\\LIVE";
 
 int main()
 {
-    printLogo();
+    int minFOV = 60;
+    int HfovIn;
     cout << "\n------------------------------------- Star Citizen FOV Tool -------------------------------------" << endl;
     cout << "--------------------------------------- By ArmoredGenie -----------------------------------------" << endl;
 
@@ -46,43 +32,46 @@ int main()
     else {
         cout << "\nRoger that CMDR, using default path" << endl;
     }
-    attPath = scPath + "\\USER\\Client\\0\\Profiles\\default\\attributes.xml";
-    cout << "\nDefault resolution for aspect ratio calculation is " << HresIn << "x" << VresIn << "." << endl;
-        if (promptYesNo("\nDo you want to change the resolution from default? ")) {
-            cout << "\nEnter horizontal resolution and press enter:";
-            cin >> HresIn;
-            cout << "\nEnter vertical resolution and press enter:";
-            cin >> VresIn;
-            cout << "\nAspect ratio will be calculated using a resolution of " << HresIn << "x" << VresIn << "." << endl;
+    string attPath = scPath + "\\USER\\Client\\0\\Profiles\\default\\attributes.xml";
+    double aRatio = calcaRatio(2560, 1440);
+    cout << "\nDefault aspect ratio is 16:9 (" << aRatio <<") for \"regular\" monitors - 2560x1440, 1920x1080 etc." << endl;
+        if (promptYesNo("\nDo you want to use a different aspect ratio? (utrawides,multi monitor etc)")) {
+            int HresIn = userInputInt("Enter game horizontal resolution and press enter: ",0,1000000);
+            int VresIn = userInputInt("\nEnter game vertical resolution and press enter: ", 0, 1000000);
+            aRatio = calcaRatio(HresIn, VresIn);
+            cout << "\nYour resolution is " << HresIn << "x" << VresIn << ". Aspect ratio is " << aRatio << endl;
         }
         else {
-            cout << "\nYou got it. Keeping default resolution of " << HresIn << "x" << VresIn << "." << endl;
+            cout << "\nYou got it. Keeping default aspect ratio of "<< aRatio << "." << endl;
         }
-    screen my_screen(HresIn, VresIn);
+    int maxFOV = calcMaxFOV(aRatio);
     do {
-        maxFOV = floor(my_screen.get_maxFOV());
         cout << "\nThe maximum horizontal FOV for your aspect ratio is " << maxFOV << endl;
-        cout << "Enter desired horizontal FOV in degrees (60-" << maxFOV << "),then press enter:";
-        cin >> HfovIn;
+        cout << "Enter desired horizontal FOV in degrees (" << minFOV << "-" << maxFOV << "):\n";
+        HfovIn = userInputInt(" ", minFOV, maxFOV);
+
     } while (HfovIn > maxFOV || HfovIn < 60);
-    my_screen.set_HFOV(HfovIn);
-    VfovStr = to_string((int)round(my_screen.get_VFOV())); //round Vertical FOV and convert to string
+    int VFOV = calcVFOV(HfovIn, aRatio);
+    string VfovStr = to_string(VFOV); //convert FOV to string
     cout << "\nBig brain math results:" << endl;
-    cout << "   Screen resolution is " << my_screen.get_Hres() << "x" << my_screen.get_Vres() << endl;
-    cout << "   Aspect ratio is " << my_screen.get_aRatio() << endl;
+    cout << "   Aspect ratio is " << aRatio << endl;
     cout << "   Maximum horizontal FOV is " << maxFOV << endl;
     cout << "   Desired horizontal FOV is " << HfovIn << endl;
     cout << "   Calculated vertical FOV is " << VfovStr << endl;
     cout << "\nsearching in:\n" << attPath << endl << endl;
-    srchRplceFile(attPath, srch, VfovStr);
+    srchRplceFile(attPath, srchFOV, VfovStr);
     if (promptYesNo("\nWould you like to copy the new file to game folder (overite)?")) {
         cpyFile("attributes.xml", attPath);
+        printLogo();
+        cout << "Copied!\n" << endl;
     }
     else {
-        cout << "\nRoger, will leave attributes.xml alone\n";
+        printLogo();
+        cout << "\nOK, leaving attributes.xml alone\n";
     }
-
-    cout << "Bye!";
-    system("pause");
+    cout << "Bye!\n" << endl;
+    cout << "press any key to exit" << endl;
+    string exit;
+    exit = _getch();
 return (0);
 } 

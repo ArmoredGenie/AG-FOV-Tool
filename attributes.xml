@@ -9,7 +9,7 @@
  <Attr name="AutoZoomOnSelectedTargetStrength" value="1"/>
  <Attr name="EnableFacewareSystemLive" value="0"/>
  <Attr name="EspZoneSize" value="8"/>
- <Attr name="FOV" value="66"/>
+ <Attr name="FOV" value="68"/>
  <Attr name="FlightCoupledDefaultOn" value="0"/>
  <Attr name="FlightProximityAssist" value="0"/>
  <Attr name="FlightSpacebrakeEnablesBoost" value="1"/>
@@ -66,6 +66,10 @@
  <Attr name="WindowMode" value="2"/>
  <Attr name="selectedShipGEID" value="4847101873735"/>
 </Attributes>
+
+
+
+
 
 
 

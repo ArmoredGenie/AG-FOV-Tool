@@ -24,36 +24,37 @@ bool promptYesNo(std::string text_i){
     } while (value != "y" && value != "n");
     return YesNo;
 }
+int userInputInt(std::string prompt_i, int greaterThan_i, int lessThan_i) {
+    std::string number;
+    std::string prompt = prompt_i;
+    int greaterThan = greaterThan_i;
+    int lessThan = lessThan_i;
+    bool error;
+    int num;
+    do {
+        error = 0;
+        std::cin.clear();
+        std::cout << prompt;
+        std::cin >> number;
+        try {
+            num = stoi(number);
+        }
+        catch (...) {
+            error = 1;
+            std::cout << "nope, try again:" << std::endl;
+        }
+    } while (num > lessThan || num < greaterThan || error == 1);
+    return num;
+}
 
- screen::screen(int Hres_i, int Vres_i) {
-    Hres = Hres_i;
-    Vres = Vres_i;
-    aRatio = (double)Vres / (double)Hres;
-    screen::HFOV = 90;
-}
-int screen::get_Hres() {
-    return Hres;
-}
-int screen::get_Vres() {
-    return Vres;
-}
-double screen::get_aRatio() {
+double calcaRatio(int resH, int resV) {
+    double aRatio = (double)resV / (double)resH;
     return aRatio;
 }
-double screen::get_HFOV() {
-    return HFOV;
-}
-double screen::get_VFOV() {
-    VFOV = HFOV / 2;
-    VFOV = tan(VFOV * PI / 180.0);
-    VFOV = screen::aRatio * VFOV;
-    VFOV = atan(VFOV);
-    VFOV = VFOV * 180 / PI;
-    VFOV = 2 * VFOV;
-    return VFOV;
-}
-double screen::get_maxFOV() {
-    maxFOV = 99 / 2;
+
+int calcMaxFOV(double aRatio_in) {
+    double aRatio = aRatio_in;
+    double maxFOV = 99 / 2;
     maxFOV = tan(maxFOV * PI / 180.0);
     maxFOV = maxFOV / aRatio;
     maxFOV = atan(maxFOV);
@@ -61,8 +62,20 @@ double screen::get_maxFOV() {
     maxFOV = maxFOV * 2;
     return maxFOV;
 }
-void screen::set_HFOV(int new_HFOV) {
-    HFOV = new_HFOV;
+
+int calcVFOV(double HFOV_in, double aRatio_in) {
+    double HFOV = HFOV_in;
+    double aRatio = aRatio_in;
+    double VFOV;
+    VFOV = HFOV / 2;
+    VFOV = tan(VFOV * PI / 180.0);
+    VFOV = aRatio * VFOV;
+    VFOV = atan(VFOV);
+    VFOV = VFOV * 180 / PI;
+    VFOV = 2 * VFOV;
+    VFOV = round(VFOV);
+    VFOV = (int)VFOV;
+    return VFOV;
 }
 
 void srchRplceFile(std::string filePath_i, std::string srch_i, std::string rplce_i) {
@@ -74,8 +87,11 @@ void srchRplceFile(std::string filePath_i, std::string srch_i, std::string rplce
     std::string rplce = rplce_i;
     inFile.open(filePath);
     outTempFile.open("attributes.xml");
-    if (inFile.fail())
-        std::cout << std::endl << "File not found! Here be dragons." << std::endl;
+    if (inFile.fail()){
+        std::cout << std::endl << "File not found! Here be dragons. Press any key to exit" << std::endl;
+        system("pause");
+        exit(0);
+    }
     else {
         while (!inFile.eof()) {
             std::getline(inFile, txtLine);
@@ -99,8 +115,11 @@ void cpyFile(std::string filePathFrom_i, std::string filePathTo_i) {
     std::string inLine;
     inTempFile.open(filePathFrom);
     outFile.open(filePathTo);
-    if (inTempFile.fail())
-        std::cout << std::endl << "File not found! Here be dragons" << std::endl;
+    if (inTempFile.fail()) {
+        std::cout << std::endl << "File not found! Here be dragons. Press any key to exit" << std::endl;
+        system("pause");
+        exit(0);
+    }
     else {
         while (!inTempFile.eof()) {
             std::getline(inTempFile, inLine);
