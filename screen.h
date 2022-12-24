@@ -7,7 +7,7 @@ int calcMaxFOV(double);
 
 bool promptYesNo(std::string);
 
-void srchRplceFile(std::string, std::string, std::string);
+void srchRplceFile(std::string, std::string, std::string, std::string);
 
 void cpyFile(std::string, std::string);
 
