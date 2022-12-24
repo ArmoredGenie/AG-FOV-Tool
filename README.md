@@ -1,4 +1,4 @@
-# AG-FOV-Tool
+# AG-FOV-Tool for Star Citizen
 
 Star Citizen uses vertical FOV values in it's config. This Tool will use your
 desired horizontal FOV and screen resolution to calculate a vertical FOV.
