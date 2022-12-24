@@ -9,8 +9,8 @@
 using namespace std;
 
 string srchFOV = " <Attr name=\"FOV\" value=\"";
-string scPath = "C:\\StarCitizen\\Live";
-//string scPath = "C:\\Program Files\\Roberts Space Industries\\StarCitizen\\LIVE";
+//string scPath = "C:\\StarCitizen\\Live";
+string scPath = "C:\\Program Files\\Roberts Space Industries\\StarCitizen\\LIVE";
 
 int main()
 {
