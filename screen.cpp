@@ -78,33 +78,55 @@ int calcVFOV(double HFOV_in, double aRatio_in) {
     return VFOV;
 }
 
-void srchRplceFile(std::string filePath_i, std::string srch_i, std::string rplce_i) {
+void srchRplceFile(std::string filePath_i, std::string destPath_i, std::string srch_i, std::string rplce_i) {
     std::ifstream inFile;
     std::ofstream outTempFile;
     std::string txtLine;
-    std::string filePath = filePath_i;
-    std::string srch = srch_i;
-    std::string rplce = rplce_i;
-    inFile.open(filePath);
-    outTempFile.open("attributes.xml");
+    inFile.open(filePath_i);
+    outTempFile.open(destPath_i);
     if (inFile.fail()){
         std::cout << std::endl << "File not found! Here be dragons. Press any key to exit" << std::endl;
-        system("pause");
+        char bye = _getch();
         exit(0);
     }
     else {
         while (!inFile.eof()) {
             std::getline(inFile, txtLine);
-            if (txtLine.find(srch) != std::string::npos) {
+            if (txtLine.find(srch_i) != std::string::npos) {
                 std::cout << "Found:\n" << txtLine << std::endl;
-                txtLine.replace(srch.length(), 2, rplce);
-                std::cout << "Line edited to:\n" << txtLine << std::endl << "\nMission accomplished! \nA new attributes.xml file has been saved wherever this .exe is stored" << std::endl;
+                txtLine.replace(srch_i.length(), 2, rplce_i);
+                std::cout << "Line edited to:\n" << txtLine << std::endl << "\nMission accomplished! \nA new file has been saved" << std::endl;
             }
             outTempFile << txtLine << std::endl;
         }
         inFile.close();
         outTempFile.close();
     }
+}
+
+std::string readFile(std::string filePath_i) {
+    std::ifstream inFile;
+    std::ofstream outTempFile;
+    std::string txtLine;
+    std::string text;
+    inFile.open(filePath_i);
+    outTempFile.open("temp.txt");
+    if (inFile.fail()) {
+        std::cout << std::endl << "File not found! Here be dragons. Press any key to exit" << std::endl;
+        //std::string bye;
+        char bye = _getch();
+        exit(0);
+    }
+    else {
+        while (!inFile.eof()) {
+            std::getline(inFile, txtLine);
+            outTempFile << txtLine << std::endl;
+            text = text + txtLine + "\n";
+        }
+        inFile.close();
+        outTempFile.close();
+    }
+    return text;
 }
 
 void cpyFile(std::string filePathFrom_i, std::string filePathTo_i) {
@@ -117,7 +139,8 @@ void cpyFile(std::string filePathFrom_i, std::string filePathTo_i) {
     outFile.open(filePathTo);
     if (inTempFile.fail()) {
         std::cout << std::endl << "File not found! Here be dragons. Press any key to exit" << std::endl;
-        system("pause");
+  
+        char bye = _getch();
         exit(0);
     }
     else {

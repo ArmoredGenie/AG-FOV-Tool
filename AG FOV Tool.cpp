@@ -27,9 +27,11 @@ int main()
     if (promptYesNo("\nDo you want to change the path ? ")) {
         cout << "\nSo needy ;) Enter new path and press enter: ";
         getline(cin,scPath);
+        cout << "-------------------------------------------------------------------------------------------------" << endl;
         cout << "\nNew path to Star Citizen is " << scPath << endl;
     }
     else {
+        cout << "-------------------------------------------------------------------------------------------------" << endl;
         cout << "\nRoger that CMDR, using default path" << endl;
     }
     string attPath = scPath + "\\USER\\Client\\0\\Profiles\\default\\attributes.xml";
@@ -39,11 +41,14 @@ int main()
             int HresIn = userInputInt("Enter game horizontal resolution and press enter: ",0,1000000);
             int VresIn = userInputInt("\nEnter game vertical resolution and press enter: ", 0, 1000000);
             aRatio = calcaRatio(HresIn, VresIn);
+            cout << "-------------------------------------------------------------------------------------------------" << endl;
             cout << "\nYour resolution is " << HresIn << "x" << VresIn << ". Aspect ratio is " << aRatio << endl;
         }
         else {
+            cout << "-------------------------------------------------------------------------------------------------" << endl;
             cout << "\nYou got it. Keeping default aspect ratio of "<< aRatio << "." << endl;
         }
+    
     int maxFOV = calcMaxFOV(aRatio);
     do {
         cout << "\nThe maximum horizontal FOV for your aspect ratio is " << maxFOV << endl;
@@ -53,13 +58,15 @@ int main()
     } while (HfovIn > maxFOV || HfovIn < 60);
     int VFOV = calcVFOV(HfovIn, aRatio);
     string VfovStr = to_string(VFOV); //convert FOV to string
+    cout << "-------------------------------------------------------------------------------------------------" << endl;
     cout << "\nBig brain math results:" << endl;
     cout << "   Aspect ratio is " << aRatio << endl;
     cout << "   Maximum horizontal FOV is " << maxFOV << endl;
     cout << "   Desired horizontal FOV is " << HfovIn << endl;
     cout << "   Calculated vertical FOV is " << VfovStr << endl;
     cout << "\nsearching in:\n" << attPath << endl << endl;
-    srchRplceFile(attPath, srchFOV, VfovStr);
+    srchRplceFile(attPath, "attributes.xml", srchFOV, VfovStr);
+    cout << "-------------------------------------------------------------------------------------------------" << endl;
     if (promptYesNo("\nWould you like to copy the new file to game folder (overite)?")) {
         cpyFile("attributes.xml", attPath);
         printLogo();
@@ -71,7 +78,6 @@ int main()
     }
     cout << "Bye!\n" << endl;
     cout << "press any key to exit" << endl;
-    string exit;
-    exit = _getch();
+    char bye = _getch();
 return (0);
 } 
