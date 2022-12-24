@@ -20,12 +20,10 @@ public:
     void set_HFOV(int new_HFOV);
 };
 
-class promptYesNo {
-private:
-    bool YesNo;
-    std::string text;
-    std::string value;
-public:
-    promptYesNo(std::string text_i);
-    bool get_YesNo();
-};
+bool promptYesNo(std::string);
+
+void srchRplceFile(std::string, std::string, std::string);
+
+void cpyFile(std::string, std::string);
+
+void printLogo();
