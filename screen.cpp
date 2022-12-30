@@ -3,6 +3,7 @@
 #include <iostream>
 #include <conio.h>
 #include <fstream>
+#include <vector>
 #define PI 3.14159265
 
 bool promptYesNo(std::string text_i){
@@ -151,6 +152,40 @@ void cpyFile(std::string filePathFrom_i, std::string filePathTo_i) {
         inTempFile.close();
         outFile.close();
     }
+}
+
+std::vector<std::string> readSettings(std::string filePath_i) {
+    std::ifstream inFile;
+    std::string txtLine;
+    std::vector<std::string> text;
+    inFile.open(filePath_i);
+    int i = 0;
+    if (inFile.fail()) {
+        std::cout << std::endl << "Settings file not found! Creating one with default values" << std::endl;
+        //std::string bye;
+        text.push_back("C:\\Program Files\\Roberts Space Industries\\StarCitizen\\LIVE");
+        text.push_back("2560");
+        text.push_back("1440");
+        writeSettings("settings.txt", text);
+    }
+    else {
+        while (!inFile.eof()) {
+            std::getline(inFile, txtLine);
+            text.push_back(txtLine);
+        }
+        inFile.close();
+    }
+    return text;
+}
+
+void writeSettings(std::string filePath_i, std::vector<std::string> settings_i) {
+    std::ofstream outFile;
+    std::string txtLine;
+    outFile.open(filePath_i);
+    for (size_t i = 0; i != settings_i.size(); ++i) {
+        outFile << settings_i[i] << std::endl;
+    }
+    outFile.close();
 }
 
 void printLogo() {

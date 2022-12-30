@@ -5,6 +5,7 @@
 #include "screen.h"
 #include <fstream>
 #include <conio.h>
+#include <vector>
 
 using namespace std;
 
@@ -23,7 +24,15 @@ int main()
     cout <<   "FOV and screen resolution to calculate a vertical FOV.\n" << endl;
     cout <<   "It will then read the current Star Citizen config and make a local copy with the new FOV value." << endl;
     cout <<   "You will have the option to copy this new file into the game directory to overrite the old one." << endl;
+    cout << "\nSettings are now saved in the local file settings.txt..." << endl;
+    vector<string> settings = readSettings("settings.txt");
+    scPath = settings[0];
+    int HresIn = stoi(settings[1]);
+    int VresIn = stoi(settings[2]);
+   
     cout << "\nCurrent path to Best Damn Space Sim is:   \n" << scPath << endl; 
+
+    
     if (promptYesNo("\nDo you want to change the path ? ")) {
         cout << "-------------------------------------------------------------------------------------------------" << endl;
         cout << "\nSo needy ;) Enter new path and press enter: ";
@@ -33,23 +42,32 @@ int main()
     }
     else {
         cout << "-------------------------------------------------------------------------------------------------" << endl;
-        cout << "\nRoger that CMDR, using default path" << endl;
+        cout << "\nRoger that CMDR, using current path" << endl;
     }
     string attPath = scPath + "\\USER\\Client\\0\\Profiles\\default\\attributes.xml";
-    double aRatio = calcaRatio(2560, 1440);
-    cout << "\nDefault aspect ratio is 16:9 (" << aRatio <<") for \"regular\" monitors - 2560x1440, 1920x1080 etc." << endl;
-        if (promptYesNo("\nDo you want to use a different aspect ratio? (utrawides,multi monitor etc)")) {
-            int HresIn = userInputInt("Enter game horizontal resolution and press enter: ",0,1000000);
-            int VresIn = userInputInt("Enter game vertical resolution and press enter: ", 0, 1000000);
+    double aRatio = calcaRatio(HresIn, VresIn);
+    cout << "\nCurrent aspect ratio is (" << aRatio <<") based on a " << HresIn << "x" << VresIn <<  " resolution." << endl;
+    if (promptYesNo("\nDo you want to use a different aspect ratio/resolution?")) {
+            HresIn = userInputInt("Enter game horizontal resolution and press enter: ",0,1000000);
+            VresIn = userInputInt("Enter game vertical resolution and press enter: ", 0, 1000000);
             aRatio = calcaRatio(HresIn, VresIn);
             cout << "-------------------------------------------------------------------------------------------------" << endl;
             cout << "\nYour resolution is " << HresIn << "x" << VresIn << ". Aspect ratio is " << aRatio << endl;
-        }
-        else {
+    }
+    else {
             cout << "-------------------------------------------------------------------------------------------------" << endl;
             cout << "\nYou got it. Keeping default aspect ratio of "<< aRatio << "." << endl;
-        }
-    
+    }
+    settings[0] = scPath;
+    settings[1] = to_string(HresIn);
+    settings[2] = to_string(VresIn);
+    if (promptYesNo("\nSave new settings?")) {
+        writeSettings("settings.txt", settings);
+        cout << "Settings saved to settings.txt\n" << endl;
+    }
+    else {
+        cout << "\nOK, not saving\n";
+    }
     int maxFOV = calcMaxFOV(aRatio);
     do {
         cout << "\nThe maximum horizontal FOV for your aspect ratio is " << maxFOV << endl;
@@ -68,7 +86,7 @@ int main()
     cout << "\nsearching in:\n" << attPath << endl << endl;
     srchRplceFile(attPath, "attributes.xml", srchFOV, VfovStr);
     cout << "-------------------------------------------------------------------------------------------------" << endl;
-    if (promptYesNo("\nWould you like to copy the new file to game folder (overite)?")) {
+    if (promptYesNo("\nWould you like to copy the new file to game folder (overwrite)?")) {
         cpyFile("attributes.xml", attPath);
         printLogo();
         cout << "Copied!\n" << endl;
