@@ -86,7 +86,7 @@ void srchRplceFile(std::string filePath_i, std::string destPath_i, std::string s
     inFile.open(filePath_i);
     outTempFile.open(destPath_i);
     if (inFile.fail()){
-        std::cout << std::endl << "File not found! Here be dragons. Press any key to exit" << std::endl;
+        std::cout << std::endl << filePath_i << "\n - File to search not found! Here be dragons. Press any key to exit" << std::endl;
         char bye = _getch();
         exit(0);
     }
@@ -95,14 +95,15 @@ void srchRplceFile(std::string filePath_i, std::string destPath_i, std::string s
             std::getline(inFile, txtLine);
             if (txtLine.find(srch_i) != std::string::npos) {
                 std::cout << "Found:\n" << txtLine << std::endl;
-                txtLine.replace(srch_i.length(), 2, rplce_i);
-                std::cout << "Line edited to:\n" << txtLine << std::endl << "\nMission accomplished! \nA new file has been saved" << std::endl;
+                // txtLine.replace(srch_i.length(), 2, rplce_i);
+                txtLine = srch_i + rplce_i + "\">";
+                std::cout << "Line edited to:\n" << txtLine << std::endl << "\nMission accomplished! \nA new XML file has been saved locally" << std::endl;
             }
             outTempFile << txtLine << std::endl;
         }
+    }
         inFile.close();
         outTempFile.close();
-    }
 }
 
 std::string readFile(std::string filePath_i) {
@@ -113,7 +114,7 @@ std::string readFile(std::string filePath_i) {
     inFile.open(filePath_i);
     outTempFile.open("temp.txt");
     if (inFile.fail()) {
-        std::cout << std::endl << "File not found! Here be dragons. Press any key to exit" << std::endl;
+        std::cout << std::endl << filePath_i << "\n - File not found! Here be dragons. Press any key to exit" << std::endl;
         //std::string bye;
         char bye = _getch();
         exit(0);
@@ -133,13 +134,11 @@ std::string readFile(std::string filePath_i) {
 void cpyFile(std::string filePathFrom_i, std::string filePathTo_i) {
     std::ifstream inTempFile;
     std::ofstream outFile;
-    std::string filePathFrom = filePathFrom_i;
-    std::string filePathTo = filePathTo_i;
     std::string inLine;
-    inTempFile.open(filePathFrom);
-    outFile.open(filePathTo);
+    inTempFile.open(filePathFrom_i);
+    outFile.open(filePathTo_i);
     if (inTempFile.fail()) {
-        std::cout << std::endl << "File not found! Here be dragons. Press any key to exit" << std::endl;
+        std::cout << std::endl << filePathFrom_i <<"\n - File to copy not found! Here be dragons. Press any key to exit" << std::endl;
   
         char bye = _getch();
         exit(0);
@@ -159,13 +158,14 @@ std::vector<std::string> readSettings(std::string filePath_i) {
     std::string txtLine;
     std::vector<std::string> text;
     inFile.open(filePath_i);
-    int i = 0;
     if (inFile.fail()) {
         std::cout << std::endl << "Settings file not found! Creating one with default values" << std::endl;
         //std::string bye;
+        text.push_back("Settings below, each on a new line (Path to SC / horizontal res / vertical res / desired horizontal FOV):");
         text.push_back("C:\\Program Files\\Roberts Space Industries\\StarCitizen\\LIVE");
         text.push_back("2560");
         text.push_back("1440");
+        text.push_back("100");
         writeSettings("settings.txt", text);
     }
     else {

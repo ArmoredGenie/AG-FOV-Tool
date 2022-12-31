@@ -6,17 +6,16 @@
 #include <fstream>
 #include <conio.h>
 #include <vector>
+#include <chrono>
+#include <thread>
 
 using namespace std;
 
 string srchFOV = " <Attr name=\"FOV\" value=\"";
-//string scPath = "C:\\StarCitizen\\Live";
-string scPath = "C:\\Program Files\\Roberts Space Industries\\StarCitizen\\LIVE";
 
 int main()
 {
-    int minFOV = 60;
-    int HfovIn;
+    int minFOV = 0;
     cout << "\n------------------------------------- Star Citizen FOV Tool -------------------------------------" << endl;
     cout << "--------------------------------------- By ArmoredGenie -----------------------------------------" << endl;
 
@@ -24,12 +23,42 @@ int main()
     cout <<   "FOV and screen resolution to calculate a vertical FOV.\n" << endl;
     cout <<   "It will then read the current Star Citizen config and make a local copy with the new FOV value." << endl;
     cout <<   "You will have the option to copy this new file into the game directory to overrite the old one." << endl;
-    cout << "\nSettings are now saved in the local file settings.txt..." << endl;
-    vector<string> settings = readSettings("settings.txt");
-    scPath = settings[0];
-    int HresIn = stoi(settings[1]);
-    int VresIn = stoi(settings[2]);
-   
+    cout << "-------------------------------------------------------------------------------------------------" << endl;
+    cout << "\nReading from settings.txt:" << endl;
+    vector<string> settings = readSettings("settings.txt"); //get settings from settings.txt
+    string scPath = settings[1];
+    int HresIn = 0;
+    int VresIn = 0;
+    int HfovIn = 0;
+    try {
+        HresIn = stoi(settings[2]);
+        VresIn = stoi(settings[3]);
+        HfovIn = stoi(settings[4]);
+    }
+    catch (...) {
+        std::cout << "\nError in settings.txt! If you delete the file, the program will create a new one for you" << std::endl;
+        cout << "\npress any key to exit" << endl;
+        char bye = _getch();
+        exit(0);
+    }
+cout <<   "  Path to SC.............. \"" << scPath << "\"" <<
+        "\n  Horizontal resolution... \"" << HresIn << "\"" <<
+        "\n  Vertical resolution..... \"" << VresIn << "\"" <<
+        "\n  FOV..................... \"" << HfovIn << "\"" << endl;
+    if (promptYesNo("\nJust do it? \n - Will skip all user prompts, use settings from settings.txt and write new xml to game directory \n - make sure settings above are good!\n")) {
+        string attPath = scPath + "\\USER\\Client\\0\\Profiles\\default\\attributes.xml";
+        double aRatio = calcaRatio(HresIn, VresIn);
+        int VFOV = calcVFOV(HfovIn, aRatio);
+        string VfovStr = to_string(VFOV); //convert FOV to string
+        srchRplceFile(attPath, "attributes.xml", srchFOV, VfovStr);
+        cpyFile("attributes.xml", attPath);
+        cout << "Copied to game directory" << "-\n" << attPath << endl;
+        cout << "press any key to exit" << endl;
+        char bye = _getch();
+        printLogo();
+        this_thread::sleep_for(chrono::seconds(2));
+        exit(0);
+    }
     cout << "\nCurrent path to Best Damn Space Sim is:   \n" << scPath << endl; 
 
     
@@ -56,35 +85,23 @@ int main()
     }
     else {
             cout << "-------------------------------------------------------------------------------------------------" << endl;
-            cout << "\nYou got it. Keeping default aspect ratio of "<< aRatio << "." << endl;
+            cout << "\nYou got it. Keeping aspect ratio of "<< aRatio << " and resolution of " << HresIn << "x" << VresIn << endl;
     }
-    settings[0] = scPath;
-    settings[1] = to_string(HresIn);
-    settings[2] = to_string(VresIn);
-    if (promptYesNo("\nSave new settings?")) {
-        writeSettings("settings.txt", settings);
-        cout << "Settings saved to settings.txt\n" << endl;
-    }
-    else {
-        cout << "\nOK, not saving\n";
-    }
-    int maxFOV = calcMaxFOV(aRatio);
-    do {
-        cout << "\nThe maximum horizontal FOV for your aspect ratio is " << maxFOV << endl;
-        cout << "Enter desired horizontal FOV in degrees (" << minFOV << "-" << maxFOV << "):\n";
-        HfovIn = userInputInt(" ", minFOV, maxFOV);
-
-    } while (HfovIn > maxFOV || HfovIn < 60);
+    cout << "Enter desired horizontal FOV in degrees (180 max):\n";
+    HfovIn = userInputInt(" ", 0, 180);
     int VFOV = calcVFOV(HfovIn, aRatio);
     string VfovStr = to_string(VFOV); //convert FOV to string
     cout << "-------------------------------------------------------------------------------------------------" << endl;
     cout << "\nBig brain math results:" << endl;
     cout << "   Aspect ratio is " << aRatio << endl;
-    cout << "   Maximum horizontal FOV is " << maxFOV << endl;
     cout << "   Desired horizontal FOV is " << HfovIn << endl;
     cout << "   Calculated vertical FOV is " << VfovStr << endl;
     cout << "\nsearching in:\n" << attPath << endl << endl;
     srchRplceFile(attPath, "attributes.xml", srchFOV, VfovStr);
+    settings[1] = scPath;
+    settings[2] = to_string(HresIn);
+    settings[3] = to_string(VresIn);
+    settings[4] = HfovIn;
     cout << "-------------------------------------------------------------------------------------------------" << endl;
     if (promptYesNo("\nWould you like to copy the new file to game folder (overwrite)?")) {
         cpyFile("attributes.xml", attPath);
@@ -94,6 +111,13 @@ int main()
     else {
         printLogo();
         cout << "\nOK, leaving new attributes.xml in same directory as this .exe\n";
+    }
+    if (promptYesNo("\nSave the values you entered to settings.txt?")) {
+        writeSettings("settings.txt", settings);
+        cout << "Settings saved\n" << endl;
+    }
+    else {
+        cout << "\nOK, not saving\n";
     }
     cout << "Bye!\n" << endl;
     cout << "press any key to exit" << endl;
