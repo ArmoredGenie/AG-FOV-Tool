@@ -14,3 +14,4 @@ C:\Program Files\Roberts Space Industries\StarCitizen\LIVE
 2560
 1440
 
+.
