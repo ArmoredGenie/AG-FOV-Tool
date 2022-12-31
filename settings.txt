@@ -2,4 +2,4 @@ Settings below, each on a new line (Path to SC / horizontal res / vertical res /
 C:\StarCitizen\LIVE
 4720
 1440
-160
+130
