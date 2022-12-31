@@ -7,11 +7,4 @@ It will then read the current Star Citizen config and make a local copy with
 the new FOV value. You will be given the option to copy this new file into
 the game directory and overrite the old one.
 
-The SC path and resolution are saved in settings.txt which looks like this by default:
-
-settings.txt
-C:\Program Files\Roberts Space Industries\StarCitizen\LIVE
-2560
-1440
-
-.
+The SC path and resolution are saved in settings.txt
