@@ -101,7 +101,7 @@ cout <<   "  Path to SC.............. \"" << scPath << "\"" <<
     settings[1] = scPath;
     settings[2] = to_string(HresIn);
     settings[3] = to_string(VresIn);
-    settings[4] = HfovIn;
+    settings[4] = to_string(HfovIn);
     cout << "-------------------------------------------------------------------------------------------------" << endl;
     if (promptYesNo("\nWould you like to copy the new file to game folder (overwrite)?")) {
         cpyFile("attributes.xml", attPath);
