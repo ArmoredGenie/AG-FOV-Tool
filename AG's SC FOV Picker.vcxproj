@@ -132,7 +132,14 @@
     <ClCompile Include="screen.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
     <ClInclude Include="screen.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="AG FOV Tool.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Icon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
