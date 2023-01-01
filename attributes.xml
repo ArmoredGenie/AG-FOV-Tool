@@ -9,10 +9,7 @@
  <Attr name="AutoZoomOnSelectedTargetStrength" value="1"/>
  <Attr name="EnableFacewareSystemLive" value="0"/>
  <Attr name="EspZoneSize" value="8"/>
- <Attr name="FOV" value="66">
- <Attr name="FlightCoupledDefaultOn" value="0"/>
- <Attr name="FlightProximityAssist" value="0"/>
- <Attr name="FlightSpacebrakeEnablesBoost" value="1"/>
+ <Attr name="FOV" value="66"/>
  <Attr name="GForceHeadBobScale" value="1"/>
  <Attr name="GForceZoomScale" value="0"/>
  <Attr name="HeadTrackingFaceWareDeadzoneRotationPitch" value="10"/>
@@ -21,14 +18,8 @@
  <Attr name="HeadTrackingFaceWareSmoothingThreshold" value="1"/>
  <Attr name="HeadTrackingFacewarePitchMultiplier" value="8"/>
  <Attr name="HeadTrackingFacewareYawMultiplier" value="8"/>
- <Attr name="HeadtrackingDisableDuringIM" value="1"/>
- <Attr name="HeadtrackingDisableDuringMobiGlas" value="1"/>
  <Attr name="HeadtrackingInactivityTime" value="2"/>
- <Attr name="HeadtrackingSource" value="3"/>
- <Attr name="HeadtrackingToggle" value="1"/>
  <Attr name="Height" value="1440"/>
- <Attr name="LookAheadEnabledShip" value="0"/>
- <Attr name="LookAheadEnabledTurret" value="0"/>
  <Attr name="LookAheadStrengthForward" value="1"/>
  <Attr name="LookAheadStrengthHorizonAlignment" value="1"/>
  <Attr name="LookAheadStrengthHorizonLookAt" value="1"/>
@@ -55,40 +46,14 @@
  <Attr name="Preset4" value=""/>
  <Attr name="Resolution" value="25"/>
  <Attr name="ShakeScale" value="1"/>
- <Attr name="ShowHints" value="0"/>
- <Attr name="SpeedThrottleDefaultFixedSpeed" value="2.25"/>
- <Attr name="SprintToggle" value="1"/>
+ <Attr name="SpeedThrottleDefaultFixedSpeed" value="0"/>
  <Attr name="SysSpecPlanetVolumetricClouds" value="3"/>
- <Attr name="TobiiEyeHeadTrackingRatio_Profile0" value="1"/>
  <Attr name="TobiiHeadPositionScale" value="3"/>
  <Attr name="TobiiHeadSensitivityRoll_Profile0" value="1"/>
  <Attr name="TobiiHeadSensitivityRoll_Profile1" value="1"/>
  <Attr name="TurretsEspZone" value="8"/>
- <Attr name="VelocityIndicatorDisplayMode" value="0"/>
  <Attr name="VideoVolume" value="1"/>
- <Attr name="WeaponGimbalDefaultModeSpaceship" value="1"/>
  <Attr name="Width" value="4720"/>
- <Attr name="WindowMode" value="2"/>
  <Attr name="selectedShipGEID" value="4847101873735"/>
 </Attributes>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

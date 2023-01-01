@@ -96,7 +96,7 @@ void srchRplceFile(std::string filePath_i, std::string destPath_i, std::string s
             if (txtLine.find(srch_i) != std::string::npos) {
                 std::cout << "Found:\n" << txtLine << std::endl;
                 // txtLine.replace(srch_i.length(), 2, rplce_i);
-                txtLine = srch_i + rplce_i + "\">";
+                txtLine = srch_i + rplce_i + "\"/>";
                 std::cout << "Line edited to:\n" << txtLine << std::endl << "\nMission accomplished! \nA new XML file has been saved locally" << std::endl;
             }
             outTempFile << txtLine << std::endl;
