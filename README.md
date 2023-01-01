@@ -1,4 +1,5 @@
 # AG-FOV-Tool for Star Citizen
+**BACKUP YOUR KEYBINDINGS BEFORE USING ANYTHING THAT TOUCHES SC SETTINGS!!**
 
 Star Citizen uses vertical FOV values in it's config. 
 
@@ -9,3 +10,5 @@ It will then read the current Star Citizen config and make a local copy with the
 User settings are saved in settings.txt. The program will create this file if it does not exist an fill it with default values.
 
 If you prefer to just edit the settings.txt, there is a "Nike mode" (just do it), where the program will skip all user prompts, use settings from settings.txt and write new xml to game directory, all in one go.
+
+Go to Releases to download
