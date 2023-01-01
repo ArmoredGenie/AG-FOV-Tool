@@ -11,4 +11,5 @@ User settings are saved in settings.txt. The program will create this file if it
 
 If you prefer to just edit the settings.txt, there is a "Nike mode" (just do it), where the program will skip all user prompts, use settings from settings.txt and write new xml to game directory, all in one go.
 
-Go to Releases to download
+Go to [Releases]([https://pages.github.com/](https://github.com/ArmoredGenie/AG-FOV-Tool/releases)) to download
+
